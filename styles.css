@@ -10,7 +10,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: fadeIn 3s ease forwards;
+  animation: fadeIn 1s ease forwards;
 }
 
 @keyframes fadeIn {
@@ -38,7 +38,7 @@ body {
   font-weight: 600;
   font-size: 14px;
   user-select: none;
-  justify-content: center; /* center the whole title-bar content */
+  justify-content: center;
   position: relative;
 }
 
@@ -46,7 +46,7 @@ body {
   display: flex;
   gap: 8px;
   position: absolute;
-  left: 12px; /* left align the buttons */
+  left: 12px;
 }
 
 .window-buttons span {
@@ -94,7 +94,7 @@ body {
 }
 
 .content {
-  padding: 40px 40px 40px 40px;
+  padding: 40px;
   text-align: center;
 }
 
@@ -105,7 +105,7 @@ body {
   margin: 0 0 30px 0;
   white-space: nowrap;
   display: inline-block;
-  border-right: 3px solid #66aaff; /* blue typing cursor */
+  border-right: 3px solid #66aaff;
   animation: blink 0.8s step-end infinite;
 }
 
@@ -162,7 +162,7 @@ body {
   justify-content: center;
   gap: 40px;
   font-family: 'Roboto Mono', monospace;
-  font-size: 28px; /* increased size */
+  font-size: 28px;
   font-weight: 600;
 }
 
@@ -174,3 +174,4 @@ body {
 .social-icons a:hover {
   color: #66aaff;
 }
+
