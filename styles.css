@@ -1,0 +1,176 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: url('MacBG.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: "Roboto Mono", monospace;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+.window {
+  width: 460px;
+  background: rgba(20, 20, 40, 0.75);
+  border-radius: 15px;
+  box-shadow: 0 0 25px rgba(0,0,0,0.6);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  overflow: hidden;
+}
+
+.title-bar {
+  background: rgba(60, 60, 70, 0.75);
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  user-select: none;
+  justify-content: center; /* center the whole title-bar content */
+  position: relative;
+}
+
+.window-buttons {
+  display: flex;
+  gap: 8px;
+  position: absolute;
+  left: 12px; /* left align the buttons */
+}
+
+.window-buttons span {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.close {
+  background: #fa615b;
+}
+
+.close .inner-dot {
+  width: 6px;
+  height: 6px;
+  background: #a6a6a6;
+  border-radius: 50%;
+}
+
+.minimize {
+  background: #f2bf51;
+  filter: brightness(0.85);
+  transition: filter 0.3s ease;
+}
+.minimize:hover {
+  filter: brightness(1);
+}
+
+.maximize {
+  background: #4fc361;
+  filter: brightness(0.85);
+  transition: filter 0.3s ease;
+}
+.maximize:hover {
+  filter: brightness(1);
+}
+
+.title-text {
+  font-family: 'Roboto Mono', monospace;
+}
+
+.content {
+  padding: 40px 40px 40px 40px;
+  text-align: center;
+}
+
+.typing-text {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 600;
+  font-size: 18px;
+  margin: 0 0 30px 0;
+  white-space: nowrap;
+  display: inline-block;
+  border-right: 3px solid #66aaff; /* blue typing cursor */
+  animation: blink 0.8s step-end infinite;
+}
+
+.typing-text.typing-finished {
+  border-right: 3px solid transparent;
+  animation: none;
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+.body-text {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.45;
+  margin: 0 0 40px 0;
+  text-align: center;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+  text-indent: 2em;
+}
+
+.body-text em {
+  font-style: italic;
+}
+
+.links {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 36px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.links a {
+  color: white;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+  font-weight: 700;
+}
+
+.links a:hover {
+  border-bottom-color: white;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 28px; /* increased size */
+  font-weight: 600;
+}
+
+.social-icons a {
+  color: white;
+  text-decoration: none;
+}
+
+.social-icons a:hover {
+  color: #66aaff;
+}
