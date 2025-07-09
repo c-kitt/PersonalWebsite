@@ -9,7 +9,8 @@
     rel="stylesheet"
   />
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./styles.css" />
+  <!-- Use relative path for styles.css -->
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="window fade-in">
@@ -65,48 +66,47 @@
   </script>
 
   <script>
-  const windowEl = document.querySelector('.window');
-  const titleBar = document.querySelector('.title-bar');
+    const windowEl = document.querySelector('.window');
+    const titleBar = document.querySelector('.title-bar');
 
-  let isDragging = false;
-  let offsetX = 0;
-  let offsetY = 0;
+    let isDragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
 
-  titleBar.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    const rect = windowEl.getBoundingClientRect();
-    offsetX = e.clientX - rect.left;
-    offsetY = e.clientY - rect.top;
-    // To keep window on top while dragging (optional)
-    windowEl.style.zIndex = 1000;
-  });
+    titleBar.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      const rect = windowEl.getBoundingClientRect();
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
+      windowEl.style.zIndex = 1000;
+    });
 
-  document.addEventListener('mouseup', () => {
-    isDragging = false;
-    // Reset z-index if you want
-    windowEl.style.zIndex = '';
-  });
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
+      windowEl.style.zIndex = '';
+    });
 
-  document.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-    let left = e.clientX - offsetX;
-    let top = e.clientY - offsetY;
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      let left = e.clientX - offsetX;
+      let top = e.clientY - offsetY;
 
-    // Optional: limit window dragging to viewport bounds
-    const maxLeft = window.innerWidth - windowEl.offsetWidth;
-    const maxTop = window.innerHeight - windowEl.offsetHeight;
+      const maxLeft = window.innerWidth - windowEl.offsetWidth;
+      const maxTop = window.innerHeight - windowEl.offsetHeight;
 
-    if (left < 0) left = 0;
-    else if (left > maxLeft) left = maxLeft;
+      if (left < 0) left = 0;
+      else if (left > maxLeft) left = maxLeft;
 
-    if (top < 0) top = 0;
-    else if (top > maxTop) top = maxTop;
+      if (top < 0) top = 0;
+      else if (top > maxTop) top = maxTop;
 
-    windowEl.style.position = 'fixed';
-    windowEl.style.left = `${left}px`;
-    windowEl.style.top = `${top}px`;
-  });
-</script>
+      windowEl.style.position = 'fixed';
+      windowEl.style.left = `${left}px`;
+      windowEl.style.top = `${top}px`;
+    });
+  </script>
+</body>
+</html>
 
 
 </body>
