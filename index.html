@@ -27,41 +27,34 @@
 
     <div class="content">
       <p class="typing-text"></p>
-      <p class="body-text">
-        I’m a freshman at Brown University studying
-        <em>Applied Math & Computer Science</em>. I’m passionate about mathematics, machine learning, and quantitative finance.
-      </p>
+      <div class="bottom-content" style="opacity: 0;">
+        <p class="body-text">
+          I’m a freshman at Brown University studying
+          <em>Applied Math & Computer Science</em>. I’m passionate about mathematics, machine learning, and quantitative finance.
+        </p>
 
-      <div class="links">
-        <a href="#" id="resume-link" target="_blank" rel="noopener"><strong>Resume →</strong></a>
-        <a href="#" id="projects-link" target="_blank" rel="noopener"><strong>Projects →</strong></a>
-      </div>
+        <div class="links">
+          <a href="#" id="resume-link" target="_blank" rel="noopener"><strong>Resume →</strong></a>
+          <a href="#" id="projects-link" target="_blank" rel="noopener"><strong>Projects →</strong></a>
+        </div>
 
-      <div class="social-icons">
-        <a href="mailto:kittredge@brown.edu" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
-        <a href="https://linkedin.com/in/caseykittredge100" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-        <a href="https://github.com/c-kitt" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-        <a href="https://instagram.com/casey.kittredge" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <div class="social-icons">
+          <a href="mailto:kittredge@brown.edu" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+          <a href="https://linkedin.com/in/caseykittredge100" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="https://github.com/c-kitt" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+          <a href="https://instagram.com/casey.kittredge" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        </div>
       </div>
     </div>
   </div>
 
 <script>
-  const typingText = document.querySelector('.typing-text');
-  const fullText = "Hi, I’m Casey!";
-  let index = 0;
+  let maxZ = 1000;
 
-  function type() {
-    if (index < fullText.length) {
-      typingText.textContent += fullText.charAt(index);
-      index++;
-      setTimeout(type, 100);
-    } else {
-      typingText.classList.add('typing-finished');
-    }
+  function bringToFront(windowEl) {
+    maxZ++;
+    windowEl.style.zIndex = maxZ;
   }
-  typingText.textContent = '';
-  type();
 
   function makeDraggable(windowEl) {
     const titleBar = windowEl.querySelector('.title-bar');
@@ -83,7 +76,7 @@
       const rect = windowEl.getBoundingClientRect();
       offsetX = e.clientX - rect.left;
       offsetY = e.clientY - rect.top;
-      windowEl.style.zIndex = 1000;
+      bringToFront(windowEl);
       titleBar.style.cursor = 'grabbing';
       e.preventDefault();
     });
@@ -91,7 +84,6 @@
     document.addEventListener('mouseup', () => {
       if (isDragging) {
         isDragging = false;
-        windowEl.style.zIndex = '';
         titleBar.style.cursor = 'grab';
       }
     });
@@ -111,18 +103,48 @@
       windowEl.style.left = `${left}px`;
       windowEl.style.top = `${top}px`;
     });
+
+    windowEl.addEventListener('mousedown', () => bringToFront(windowEl));
   }
 
   const mainWindow = document.querySelector('.window');
   makeDraggable(mainWindow);
+  bringToFront(mainWindow);
+
+  const typingText = mainWindow.querySelector('.typing-text');
+  const fullText = "Hi, I’m Casey!";
+  let index = 0;
+
+  const bottomContent = mainWindow.querySelector('.bottom-content');
+  bottomContent.style.opacity = '0';
+
+  function typeMain() {
+    if (index < fullText.length) {
+      typingText.textContent += fullText.charAt(index);
+      index++;
+      setTimeout(typeMain, 100);
+    } else {
+      typingText.classList.add('typing-finished');
+      fadeInBottomContent();
+    }
+  }
+
+  function fadeInBottomContent() {
+    bottomContent.style.transition = 'opacity 1s ease';
+    bottomContent.style.opacity = '1';
+  }
+
+  typingText.textContent = '';
+  typeMain();
 
   function createWindow(title) {
+    const mainRect = mainWindow.getBoundingClientRect();
     const newWindow = document.createElement('div');
     newWindow.classList.add('window');
     newWindow.style.position = 'fixed';
-    newWindow.style.left = '100px';
-    newWindow.style.top = '100px';
-    newWindow.style.zIndex = 1000;
+    newWindow.style.left = `${mainRect.left}px`;
+    newWindow.style.top = `${mainRect.top}px`;
+    bringToFront(newWindow);
 
     newWindow.innerHTML = `
       <div class="title-bar">
@@ -145,25 +167,25 @@
 
     makeDraggable(newWindow);
 
-    const typingText = newWindow.querySelector('.typing-text');
-    let index = 0;
-    const fullText = title;
+    const typingTextNew = newWindow.querySelector('.typing-text');
+    let idx = 0;
+    const fullTextNew = title;
 
     const comingSoonText = newWindow.querySelector('.coming-soon');
     comingSoonText.style.opacity = '0';
 
     function typeNew() {
-      if (index < fullText.length) {
-        typingText.textContent += fullText.charAt(index);
-        index++;
+      if (idx < fullTextNew.length) {
+        typingTextNew.textContent += fullTextNew.charAt(idx);
+        idx++;
         setTimeout(typeNew, 100);
       } else {
-        typingText.classList.add('typing-finished');
+        typingTextNew.classList.add('typing-finished');
         comingSoonText.style.transition = 'opacity 0.5s ease';
         comingSoonText.style.opacity = '1';
       }
     }
-    typingText.textContent = '';
+    typingTextNew.textContent = '';
     typeNew();
 
     const closeBtn = newWindow.querySelector('.close');
