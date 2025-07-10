@@ -9,12 +9,11 @@
     rel="stylesheet"
   />
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet" />
-  <!-- Use relative path for styles.css -->
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="okcat.png" type="image/png" />
 </head>
 <body>
-  <div class="window fade-in">
+  <div class="window fade-in" style="position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);">
     <div class="title-bar">
       <div class="window-buttons">
         <span class="close"><span class="inner-dot"></span></span>
@@ -22,7 +21,7 @@
         <span class="maximize"></span>
       </div>
       <div class="title-text">
-        <i class="fa-solid fa-folder"></i> ckitt - zsh - 80×24
+        <i class="fa-solid fa-folder"></i> ckitt - main
       </div>
     </div>
 
@@ -34,8 +33,8 @@
       </p>
 
       <div class="links">
-        <a href="#" target="_blank" rel="noopener"><strong>Resume →</strong></a>
-        <a href="#" target="_blank" rel="noopener"><strong>Projects →</strong></a>
+        <a href="#" id="resume-link" target="_blank" rel="noopener"><strong>Resume →</strong></a>
+        <a href="#" id="projects-link" target="_blank" rel="noopener"><strong>Projects →</strong></a>
       </div>
 
       <div class="social-icons">
@@ -47,68 +46,141 @@
     </div>
   </div>
 
-  <script>
-    const typingText = document.querySelector('.typing-text');
-    const fullText = "Hi, I’m Casey!";
-    let index = 0;
+<script>
+  const typingText = document.querySelector('.typing-text');
+  const fullText = "Hi, I’m Casey!";
+  let index = 0;
 
-    function type() {
-      if (index < fullText.length) {
-        typingText.textContent += fullText.charAt(index);
-        index++;
-        setTimeout(type, 100);
-      } else {
-        typingText.classList.add('typing-finished');
-      }
+  function type() {
+    if (index < fullText.length) {
+      typingText.textContent += fullText.charAt(index);
+      index++;
+      setTimeout(type, 100);
+    } else {
+      typingText.classList.add('typing-finished');
     }
+  }
+  typingText.textContent = '';
+  type();
 
-    typingText.textContent = '';
-    type();
-  </script>
-
-  <script>
-    const windowEl = document.querySelector('.window');
-    const titleBar = document.querySelector('.title-bar');
-
+  function makeDraggable(windowEl) {
+    const titleBar = windowEl.querySelector('.title-bar');
     let isDragging = false;
     let offsetX = 0;
     let offsetY = 0;
 
+    titleBar.style.cursor = 'grab';
+
     titleBar.addEventListener('mousedown', (e) => {
+      if (windowEl.style.transform) {
+        const rect = windowEl.getBoundingClientRect();
+        windowEl.style.left = `${rect.left}px`;
+        windowEl.style.top = `${rect.top}px`;
+        windowEl.style.transform = '';
+        windowEl.style.position = 'fixed';
+      }
       isDragging = true;
       const rect = windowEl.getBoundingClientRect();
       offsetX = e.clientX - rect.left;
       offsetY = e.clientY - rect.top;
       windowEl.style.zIndex = 1000;
+      titleBar.style.cursor = 'grabbing';
+      e.preventDefault();
     });
 
     document.addEventListener('mouseup', () => {
-      isDragging = false;
-      windowEl.style.zIndex = '';
+      if (isDragging) {
+        isDragging = false;
+        windowEl.style.zIndex = '';
+        titleBar.style.cursor = 'grab';
+      }
     });
 
     document.addEventListener('mousemove', (e) => {
       if (!isDragging) return;
+
       let left = e.clientX - offsetX;
       let top = e.clientY - offsetY;
 
       const maxLeft = window.innerWidth - windowEl.offsetWidth;
       const maxTop = window.innerHeight - windowEl.offsetHeight;
 
-      if (left < 0) left = 0;
-      else if (left > maxLeft) left = maxLeft;
+      left = Math.min(Math.max(left, 0), maxLeft);
+      top = Math.min(Math.max(top, 0), maxTop);
 
-      if (top < 0) top = 0;
-      else if (top > maxTop) top = maxTop;
-
-      windowEl.style.position = 'fixed';
       windowEl.style.left = `${left}px`;
       windowEl.style.top = `${top}px`;
     });
-  </script>
-</body>
-</html>
+  }
 
+  const mainWindow = document.querySelector('.window');
+  makeDraggable(mainWindow);
 
+  function createWindow(title) {
+    const newWindow = document.createElement('div');
+    newWindow.classList.add('window');
+    newWindow.style.position = 'fixed';
+    newWindow.style.left = '100px';
+    newWindow.style.top = '100px';
+    newWindow.style.zIndex = 1000;
+
+    newWindow.innerHTML = `
+      <div class="title-bar">
+        <div class="window-buttons">
+          <span class="close"><span class="inner-dot"></span></span>
+          <span class="minimize"></span>
+          <span class="maximize"></span>
+        </div>
+        <div class="title-text">
+          <i class="fa-solid fa-folder"></i> ${title}
+        </div>
+      </div>
+      <div class="content">
+        <p class="typing-text"></p>
+        <p class="body-text coming-soon">Coming soon.</p>
+      </div>
+    `;
+
+    document.body.appendChild(newWindow);
+
+    makeDraggable(newWindow);
+
+    const typingText = newWindow.querySelector('.typing-text');
+    let index = 0;
+    const fullText = title;
+
+    const comingSoonText = newWindow.querySelector('.coming-soon');
+    comingSoonText.style.opacity = '0';
+
+    function typeNew() {
+      if (index < fullText.length) {
+        typingText.textContent += fullText.charAt(index);
+        index++;
+        setTimeout(typeNew, 100);
+      } else {
+        typingText.classList.add('typing-finished');
+        comingSoonText.style.transition = 'opacity 0.5s ease';
+        comingSoonText.style.opacity = '1';
+      }
+    }
+    typingText.textContent = '';
+    typeNew();
+
+    const closeBtn = newWindow.querySelector('.close');
+    closeBtn.addEventListener('click', () => {
+      newWindow.remove();
+    });
+  }
+
+  document.getElementById('resume-link').addEventListener('click', (e) => {
+    e.preventDefault();
+    createWindow('Resume');
+  });
+
+  document.getElementById('projects-link').addEventListener('click', (e) => {
+    e.preventDefault();
+    createWindow('Projects');
+  });
+</script>
 </body>
 </html>

@@ -11,6 +11,7 @@ body {
   justify-content: center;
   align-items: center;
   animation: fadeIn 1s ease forwards;
+  overflow: hidden;
 }
 
 @keyframes fadeIn {
@@ -26,6 +27,8 @@ body {
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   overflow: hidden;
+  user-select: none;
+  position: fixed;
 }
 
 .title-bar {
@@ -40,6 +43,7 @@ body {
   user-select: none;
   justify-content: center;
   position: relative;
+  cursor: grab;
 }
 
 .window-buttons {
@@ -69,6 +73,7 @@ body {
   height: 6px;
   background: #a6a6a6;
   border-radius: 50%;
+  position: absolute;
 }
 
 .minimize {
@@ -96,13 +101,14 @@ body {
 .content {
   padding: 40px;
   text-align: center;
+  user-select: text;
 }
 
 .typing-text {
   font-family: 'Roboto Mono', monospace;
   font-weight: 600;
   font-size: 18px;
-  margin: 0 0 30px 0;
+  margin: 0 0 10px 0;
   white-space: nowrap;
   display: inline-block;
   border-right: 3px solid #66aaff;
@@ -129,7 +135,7 @@ body {
   max-width: 420px;
   margin-left: auto;
   margin-right: auto;
-  text-indent: 2em;
+  text-indent: 0;
 }
 
 .body-text em {
@@ -174,4 +180,3 @@ body {
 .social-icons a:hover {
   color: #66aaff;
 }
-
